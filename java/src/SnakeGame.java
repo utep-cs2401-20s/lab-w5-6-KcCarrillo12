@@ -6,13 +6,13 @@ public class SnakeGame {
     private static int recursiveChecks = 0;
 
     public SnakeGame(){
-        game = new boolean [1][1];
+        this.game = new boolean [1][1];
     }
 
     public SnakeGame(boolean [][] arry, int x, int y){
         for(int i=0; i<arry.length; i++){
             for(int j=0; j<arry[i].length; j++){
-                game[i][j] == arry[i][j];
+                game[i][j] = arry[i][j];
             }
         }
 
@@ -22,21 +22,54 @@ public class SnakeGame {
 
     public int[] findTailExhaustive(){
         resetCounters();
-        int tailCounter = 0;
+        int [] tailFound = new int [3];
+        int tailLength = 0;
+        int x;
+        int y;
 
         for(int i=0; i<game.length; i++) {
             for(int j=0; j<game[i].length; j++){
-                exhaustiveChecks++;
-
                 if(game[i][j] == 1){
-                    tailCounter += 1;
+                    if(game[i][j] && neighbors(i, j)  == 1 && game[i][j] != headPosition) {
+                        tailLength += 1;
+                        x = i;
+                        y = j;
+                    }
+                    else
+                        exhaustiveChecks--;
                 }
+                exhaustiveChecks++b ;
             }
         }
+
+        return tailFound(x  , y, tailLength);
         //return an array of int size 3 (includes tail position and the length) [tail x, tail y, length]
     }
 
+    public int neighbors(int R, int C){
+        int counter = 0;
+
+        if(((C-1) >=0) && ((C-1) < game.length) && (R >=0) && (R < game.length) && game[R][C-1] == 1)
+            counter ++;
+
+        if((C >=0) && (C < game.length) && ((R-1) >=0) && ((R-1) < game.length) && game[R-1][C] == 1)
+            counter ++;
+
+        if((C >=0) && (C < game.length) && ((R+1) >=0) && ((R+1) < game.length) && game[R+1][C] == 1)
+            counter ++;
+
+        if(((C+1) >=0) && ((C+1) < game.length) && (R >=0) && (R < game.length) && game[R][C+1] == 1)
+            counter ++;
+
+        return counter;
+    }
+
     public int[] findTailRecursive(){
+        resetCounters();
+        int [] tailFound = new int [3];
+        int tailLength = 0;
+
+
         //return an array of int size 3 (includes tail position and the length) [tail x, tail y, length]
     }
 
@@ -50,11 +83,11 @@ public class SnakeGame {
     }
 
     private static int getRecursiveChecks(){
-
+        return findTailRecursive();
     }
 
     private static int getExhaustiveChecks(){
-
+        return findTailExhaustive();
     }
 }
 
