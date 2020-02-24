@@ -38,7 +38,7 @@ public class SnakeGame {
                     else
                         exhaustiveChecks--;
                 }
-                exhaustiveChecks++b ;
+                exhaustiveChecks++;
             }
         }
 
