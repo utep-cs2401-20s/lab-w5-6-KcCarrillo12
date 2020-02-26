@@ -20,6 +20,24 @@ public class SnakeGame {
         headPosition[1] = y;
     }
 
+    public int neighbors(int R, int C){
+        int counter = 0;
+
+        if(((C-1) >=0) && ((C-1) < game.length) && (R >=0) && (R < game.length) && game[R][C-1] == true)
+            counter ++;
+
+        if((C >=0) && (C < game.length) && ((R-1) >=0) && ((R-1) < game.length) && game[R-1][C] == true)
+            counter ++;
+
+        if((C >=0) && (C < game.length) && ((R+1) >=0) && ((R+1) < game.length) && game[R+1][C] == true)
+            counter ++;
+
+        if(((C+1) >=0) && ((C+1) < game.length) && (R >=0) && (R < game.length) && game[R][C+1] == true)
+            counter ++;
+
+        return counter;
+    }
+
     public int[] findTailExhaustive(){
         resetCounters();
         int [] tailFound = new int [3];
@@ -29,7 +47,7 @@ public class SnakeGame {
 
         for(int i=0; i<game.length; i++) {
             for(int j=0; j<game[i].length; j++){
-                if(game[i][j] == 1){
+                if(game[i][j] == true){
                     if(game[i][j] && neighbors(i, j)  == 1 && game[i][j] != headPosition) {
                         tailLength += 1;
                         x = i;
@@ -42,39 +60,29 @@ public class SnakeGame {
             }
         }
 
-        return tailFound(x  , y, tailLength);
+        return tailFound{x  , y, tailLength};
         //return an array of int size 3 (includes tail position and the length) [tail x, tail y, length]
     }
 
-    public int neighbors(int R, int C){
-        int counter = 0;
-
-        if(((C-1) >=0) && ((C-1) < game.length) && (R >=0) && (R < game.length) && game[R][C-1] == 1)
-            counter ++;
-
-        if((C >=0) && (C < game.length) && ((R-1) >=0) && ((R-1) < game.length) && game[R-1][C] == 1)
-            counter ++;
-
-        if((C >=0) && (C < game.length) && ((R+1) >=0) && ((R+1) < game.length) && game[R+1][C] == 1)
-            counter ++;
-
-        if(((C+1) >=0) && ((C+1) < game.length) && (R >=0) && (R < game.length) && game[R][C+1] == 1)
-            counter ++;
-
-        return counter;
-    }
 
     public int[] findTailRecursive(){
         resetCounters();
-        int [] tailFound = new int [3];
-        int tailLength = 0;
-
+        return findTailRecursive(int[] currentPosition, int[] previousPosition);
 
         //return an array of int size 3 (includes tail position and the length) [tail x, tail y, length]
     }
 
     private int[] findTailRecursive(int[] currentPosition, int[] previousPosition){
+        //headPosition is the first position (current position) -> goes to neighbor (current position which makes head position previous position and so on and so forth)
+        int [] currentPosition = {headPosition};
+        int [] previousPosition; //i dont know what im doing rn i need a nap. i figure out later /.\
+        int [] tailFound = new int [3];
+        int tailLength = 0;
+        int x;
+        int y;
 
+        if()
+        return tailFound{x, y, tailLength};
     }
 
     private void resetCounters(){
@@ -82,11 +90,11 @@ public class SnakeGame {
         recursiveChecks = 0;
     }
 
-    private static int getRecursiveChecks(){
+    public static int getRecursiveChecks(){
         return findTailRecursive();
     }
 
-    private static int getExhaustiveChecks(){
+    public static int getExhaustiveChecks(){
         return findTailExhaustive();
     }
 }
@@ -95,7 +103,7 @@ public class SnakeGame {
     //nested for loop
     //check how many cells are checked
 
-    //recursivley- using recurssion
-    //stop: finds tail
+    //recursivley- using recurssion  >0)
+    //stop: finds tail                (>) <--- its a duck
     //recursive call: find neighbors and call recursive call on the neighbor until tail is found
     //check how many cells are checked
