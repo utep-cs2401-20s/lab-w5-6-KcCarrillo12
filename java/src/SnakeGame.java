@@ -2,14 +2,16 @@ public class SnakeGame {
 
     private boolean [][] game;
     private int [] headPosition = new int[2];
-    private static int exhaustiveChecks = 0;
-    private static int recursiveChecks = 0;
+    private static int exhaustiveChecks;
+    private static int recursiveChecks;
 
     public SnakeGame(){
         this.game = new boolean [1][1];
     }
 
     public SnakeGame(boolean [][] arry, int x, int y){
+        this.game = new boolean[arry.length][arry[0].length];
+
         for(int i=0; i<arry.length; i++){
             for(int j=0; j<arry[i].length; j++){
                 game[i][j] = arry[i][j];
@@ -40,49 +42,103 @@ public class SnakeGame {
 
     public int[] findTailExhaustive(){
         resetCounters();
-        int [] tailFound = new int [3];
+        int[] tailFound = new int[3];
         int tailLength = 0;
         int x;
         int y;
 
-        for(int i=0; i<game.length; i++) {
+        for(int i=0; i<game.length; i++){
             for(int j=0; j<game[i].length; j++){
-                if(game[i][j] == true){
-                    if(game[i][j] && neighbors(i, j)  == 1 && game[i][j] != headPosition) {
-                        tailLength += 1;
-                        x = i;
-                        y = j;
-                    }
-                    else
-                        exhaustiveChecks--;
-                }
+
                 exhaustiveChecks++;
+
+                if(game[i][j] == true){
+                    tailLength += 1;
+
+                    if(neighbors(i, j) == 1 && i != headPosition[0] && j != headPosition[1]){
+                        x = j;
+                        y = i;
+                        tailFound[0] = x;
+                        tailFound[1] = y;
+                    }
+                }
             }
         }
+        tailFound[2] = tailLength;
 
-        return tailFound{x  , y, tailLength};
-        //return an array of int size 3 (includes tail position and the length) [tail x, tail y, length]
+        return tailFound;
     }
 
 
     public int[] findTailRecursive(){
         resetCounters();
-        return findTailRecursive(int[] currentPosition, int[] previousPosition);
-
-        //return an array of int size 3 (includes tail position and the length) [tail x, tail y, length]
+        return findTailRecursive(headPosition, headPosition);
     }
 
     private int[] findTailRecursive(int[] currentPosition, int[] previousPosition){
-        //headPosition is the first position (current position) -> goes to neighbor (current position which makes head position previous position and so on and so forth)
-        int [] currentPosition = {headPosition};
-        int [] previousPosition; //i dont know what im doing rn i need a nap. i figure out later /.\
-        int [] tailFound = new int [3];
-        int tailLength = 0;
+        //headPosition is the first position (current position) -> goes to neighbors (current position which makes head position previous position and so on and so forth)
         int x;
         int y;
 
-        if()
-        return tailFound{x, y, tailLength};
+        if(neighbors(currentPosition[0],currentPosition[1]) == 1 && currentPosition[0] != previousPosition[0] && currentPosition[1] != previousPosition[1]){
+            recursiveChecks++;
+            x = currentPosition[0];
+            y = currentPosition[1];
+
+            return new int[] {x, y, getLength()};
+        }
+        else{
+            recursiveChecks++;
+            int[] neighbor = neighborTracker(currentPosition[0],currentPosition[1],previousPosition[0],previousPosition[1]);
+            previousPosition[0] = currentPosition[0];
+            previousPosition[1] = currentPosition[1];
+            return findTailRecursive(neighbor,previousPosition);
+        }
+    }
+
+    public int[] neighborTracker(int R, int C, int prev, int prev2){ //
+        int[] neighborPosition = new int[2];
+
+        //left
+        if(((C-1) >=0) && ((C-1) < game.length) && (R >=0) && (R < game.length) && game[R][C-1] == true && R != prev && (C-1) == prev2) {
+            neighborPosition[0] = R;
+            neighborPosition[1] = (C-1);
+        }
+
+        //up
+        if((C >=0) && (C < game.length) && ((R-1) >=0) && ((R-1) < game.length) && game[R-1][C] == true && (R-1) != prev && C != prev2){
+            neighborPosition[0] = (R-1);
+            neighborPosition[1] = C;
+        }
+
+        //down
+        if((C >=0) && (C < game.length) && ((R+1) >=0) && ((R+1) < game.length) && game[R+1][C] == true && (R+1) != prev && C != prev2) {
+            neighborPosition[0] = (R+1);
+            neighborPosition[1] = C;
+        }
+
+        //right
+        if(((C+1) >=0) && ((C+1) < game.length) && (R >=0) && (R < game.length) && game[R][C+1] == true &&  R == prev && (C+1) == prev2) {
+            neighborPosition[0] = R;
+            neighborPosition[1] = (C+1);
+        }
+
+        return neighborPosition;
+    }
+    //neighborsPosition
+
+    private int getLength(){
+        int tailLength = 0;
+
+        for(int i = 0; i < game.length; i++){
+            for(int j = 0; j < game[i].length; j++){
+                if(game[i][j]){
+                    tailLength++;
+                }
+            }
+        }
+
+        return tailLength;
     }
 
     private void resetCounters(){
@@ -90,20 +146,11 @@ public class SnakeGame {
         recursiveChecks = 0;
     }
 
-    public static int getRecursiveChecks(){
-        return findTailRecursive();
+    public static int getExhaustiveChecks(){
+        return exhaustiveChecks;
     }
 
-    public static int getExhaustiveChecks(){
-        return findTailExhaustive();
+    public static int getRecursiveChecks(){
+        return recursiveChecks;
     }
 }
-
-    //exastivley- going through every possible way to find it
-    //nested for loop
-    //check how many cells are checked
-
-    //recursivley- using recurssion  >0)
-    //stop: finds tail                (>) <--- its a duck
-    //recursive call: find neighbors and call recursive call on the neighbor until tail is found
-    //check how many cells are checked
