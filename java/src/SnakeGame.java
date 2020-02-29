@@ -80,59 +80,59 @@ public class SnakeGame {
         int y;
 
         if(neighbors(currentPosition[0],currentPosition[1]) == 1 && currentPosition[0] != previousPosition[0] && currentPosition[1] != previousPosition[1]){
+
+            recursiveChecks++;
             x = currentPosition[0];
             y = currentPosition[1];
-            recursiveChecks++;
 
             return new int [] {x, y, getLength()};
         }
-        else{
-            int [] neighbor = neighborTracker(currentPosition[0],currentPosition[1],previousPosition[0],previousPosition[1]);
 
+        else{
+            recursiveChecks++;
             previousPosition[0] = currentPosition[0];
             previousPosition[1] = currentPosition[1];
-            recursiveChecks++;
 
-            return findTailRecursive(neighbor,previousPosition);
+            return findTailRecursive(neighborTracker(currentPosition[0], currentPosition[1], previousPosition[0], previousPosition[1]), previousPosition);
         }
     }
 
-    public int[] neighborTracker(int R, int C, int prev, int prev2){ //
+    public int[] neighborTracker(int R, int C, int prev, int prev2){
         int [] neighborPosition = new int [2];
 
         //left
         if(((C-1) >=0) && game[R][C-1] == true && R != prev && (C-1) == prev2){
             neighborPosition[0] = R;
-            neighborPosition[1] = (C-1);
+            neighborPosition[1] = C-1;
         }
 
         //up
-        if(R-1 >=0 && game[R-1][C] == true && (R-1) != prev && C != prev2){
-            neighborPosition[0] = (R-1);
+        else if(R-1 >=0 && game[R-1][C] == true && (R-1) != prev && C != prev2){
+            neighborPosition[0] = R-1;
             neighborPosition[1] = C;
         }
 
         //down
-        if(R+1 < game.length && game[R+1][C] == true && (R+1) != prev && C != prev2){
-            neighborPosition[0] = (R+1);
+        else if(R+1 < game.length && game[R+1][C] == true && (R+1) != prev && C != prev2){
+            neighborPosition[0] = R+1;
             neighborPosition[1] = C;
         }
 
         //right
-        if(C+1 < game.length && game[R][C+1] == true &&  R == prev && (C+1) == prev2){
+        else if(C+1 < game.length && game[R][C+1] == true &&  R == prev && (C+1) == prev2){
             neighborPosition[0] = R;
-            neighborPosition[1] = (C+1);
+            neighborPosition[1] = C+1;
         }
 
         return neighborPosition;
     }
-    
+
     private int getLength(){
         int tailLength = 0;
 
         for(int i = 0; i < game.length; i++){
             for(int j = 0; j < game[i].length; j++){
-                if(game[i][j]){
+                if(game[i][j] == true){
                     tailLength++;
                 }
             }
