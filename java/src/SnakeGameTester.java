@@ -78,26 +78,26 @@ public class SnakeGameTester {
 
     @Test
     public void findTailRecursive2(){ //tests to see if tail is found and length
-        boolean[][] arr = {{false, false, false, false, false, false},
-                {true, true, true, true, false, false},
-                {true, false, false, true, true, true},
-                {true, false, false, false, false, true},
-                {false, false, true, true, true, true},
-                {false, false, true, false, false, false}};
-        int[] testArr = {0,0,15};
-        SnakeGame sol = new SnakeGame(arr, 0, 3);
+        boolean[][] arr = {{true, false, false, false, false, false},
+                            {true, true, true, true, false, false},
+                            {false, false, false, true, true, true},
+                            {false, false, false, false, false, true},
+                            {false, false, true, true, true, true},
+                            {false, false, true, false, false, false}};
+        int[] testArr = {0,0,14};
+        SnakeGame sol = new SnakeGame(arr, 5, 2);
         assertArrayEquals(testArr, sol.findTailRecursive());
     }
 
     @Test
     public void findTailRecursive3(){ //tests amount of checks
         boolean[][] arr = {{false, false, false, false, false},
-                {true, true, true, false, false},
-                {true, false, true, false, false},
-                {true, false, true, false, false},
-                {false, false, true, false, false}};
+                           {true, true, true, false, false},
+                           {false, false, true, false, false},
+                           {false, false, true, false, false},
+                           {false, false, true, false, false}};
         int testChecks = 2;
-        SnakeGame sol = new SnakeGame(arr, 2, 4);
+        SnakeGame sol = new SnakeGame(arr, 0, 1);
         sol.findTailRecursive();
         assertEquals(testChecks, sol.getRecursiveChecks());
     }
@@ -105,8 +105,8 @@ public class SnakeGameTester {
     @Test
     public void findTailRecursive4(){ //tests amount of checks
         boolean[][] arr = {{false, false, false},
-                {true, true, true},
-                {true, false, true}};
+                           {true, true, true},
+                           {true, false, true}};
         int testChecks = 4;
         SnakeGame sol = new SnakeGame(arr, 0, 2);
         sol.findTailRecursive();
